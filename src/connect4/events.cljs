@@ -1,22 +1,18 @@
 (ns connect4.events
-  (:require [re-frame.core :refer [reg-event-db]]))
-
-(defn- next-coord-in-col
-  [col coords]
-  (let [pieces-in-col (filter #(= col (second %)) coords)]
-    [(count pieces-in-col) col]))
+  (:require 
+    [connect4.board :as board]
+    [re-frame.core :refer [reg-event-db]]))
 
 (reg-event-db
   :initialize
-  (println "init")
   (fn [_ _]
-    {:reds #{[1 2]}}))
+    {:reds #{}}))
 
 (reg-event-db
   :add-red
   (fn [db _]
-    (println db)
     (update-in db [:reds]
-      conj (next-coord-in-col
-             3
-             (:reds db)))))
+      conj (board/next-coord-in-col
+             (rand-int ((comp dec count) (first board/game-board)))
+             (:reds db)
+             ((comp dec count) board/game-board)))))

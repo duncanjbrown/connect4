@@ -8,14 +8,13 @@
 
 (enable-console-print!)
 
-(def empty-board (board/empty-board 7 6))
-
 (defn app
   []
-  (println "inside app")
-  (let [reds (rf/subscribe [:reds])]
+  (let [game-board board/game-board
+        reds (rf/subscribe [:reds])
+        yellows (rf/subscribe [:yellows])]
     [:div#app
-      [board/board-view (board/populate empty-board @reds)]
+      [board/board-view (board/populate game-board @reds)]
       [:a {:href "#"
             :on-click #(rf/dispatch [:add-red])}
         "Go"]]))
