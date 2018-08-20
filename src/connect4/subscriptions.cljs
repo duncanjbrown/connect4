@@ -7,6 +7,6 @@
     (:reds db)))
 
 (reg-sub
-  :yellows
+  :cursor-pos
   (fn [db [_ _]]
-    (:yellows db)))
+   (:cursor-pos db)))

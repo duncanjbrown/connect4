@@ -6,13 +6,26 @@
 (reg-event-db
   :initialize
   (fn [_ _]
-    {:reds #{}}))
+    {:reds #{}
+     :cursor-pos 0}))
+
+(def board-max-x (count (first board/game-board)))
+(def board-max-y (count board/game-board))
 
 (reg-event-db
-  :add-red
+  :drop-piece
   (fn [db _]
     (update-in db [:reds]
       conj (board/next-coord-in-col
-             (rand-int ((comp dec count) (first board/game-board)))
+             (:cursor-pos db)
              (:reds db)
-             ((comp dec count) board/game-board)))))
+             (dec board-max-y))))) 
+
+(reg-event-db
+  :cursor-pos
+  (fn [db [_ increment]]
+    (let [current-pos (:cursor-pos db)]
+      (assoc db :cursor-pos
+        (mod
+          (+ current-pos increment)
+          board-max-x)))))
