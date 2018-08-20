@@ -1,0 +1,4 @@
+^{:watch-dirs ["src" "tests"]
+  :css-dirs ["resources/public/css"]
+  :extra-main-files {:tests {:main connect4.test-runner}}}
+{:main connect4.core}

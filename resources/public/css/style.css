@@ -1,0 +1,15 @@
+body {
+  font-family: monospace;
+  font-size: 40px;
+}
+.row {
+  display:block;
+  height: 39px;
+}
+.cell {
+  float: left;
+  text-align: center;
+  padding: 8px;
+  width: 20px;
+  height: 20px;
+}
