@@ -35,3 +35,23 @@
   (let [pieces-in-col (filter #(= col (second %)) coords)]
     [(- col-max (count pieces-in-col)) col]))
 
+(defn consecutive-pieces
+  [transform origin available-pieces]
+  (let [candidate-coords (iterate #(vec (map + transform %)) origin)]
+    (set (take-while available-pieces candidate-coords))))
+
+(defn find-winners-from-origin
+  [origin available-pieces]
+  (let [run-right (consecutive-pieces [0 1] origin available-pieces)
+        run-left (consecutive-pieces [0 -1] origin available-pieces)
+        run-up (consecutive-pieces [1 0] origin available-pieces)
+        run-down (consecutive-pieces [-1 0] origin available-pieces)
+        run-rdiag-up (consecutive-pieces [-1 1] origin available-pieces)
+        run-rdiag-down (consecutive-pieces [1 -1] origin available-pieces)
+        run-ldiag-up (consecutive-pieces [-1 -1] origin available-pieces)
+        run-ldiag-down (consecutive-pieces [1 1] origin available-pieces)]
+    (filter #(= 4 (count %))
+      [(clojure.set/union run-right run-left)
+       (clojure.set/union run-up run-down)
+       (clojure.set/union run-rdiag-up run-rdiag-down)
+       (clojure.set/union run-ldiag-up run-ldiag-down)])))
