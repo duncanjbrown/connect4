@@ -17,17 +17,17 @@
           [:div.cell
             (let [value (get-in board [y x])]
               (case value
-                nil "-"
+                nil [:span.blank "_"]
                 :red [:span.red "O"]
                 :yellow [:span.yellow "O"]))])])])
 
 (defn populate
-  "Take red cells as sets of [y x] coords and write them into a board"
-  [board reds]
+  "Take cells as sets of [y x] coords and write them into a board"
+  [board cells colour]
   (reduce (fn [board coordinates]
-            (assoc-in board coordinates :red))
+            (assoc-in board coordinates colour))
           board
-          reds))
+          cells))
 
 (defn next-coord-in-col
   "Coords appear as [y x] and [0 0] is at top left"

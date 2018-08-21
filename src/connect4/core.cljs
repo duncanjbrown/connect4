@@ -19,10 +19,14 @@
 (defn app
   []
   (let [game-board board/game-board
-        reds (rf/subscribe [:reds])]
+        reds (rf/subscribe [:reds])
+        yellows (rf/subscribe [:yellows])]
     [:div#app
       [cursor-ui (count (first board/game-board)) @(rf/subscribe [:cursor-pos])]
-      [board/board-view (board/populate game-board @reds)]
+      [board/board-view 
+       (board/populate
+         (board/populate game-board @reds :red)
+         @yellows :yellow)]
       [:a {:href "#"
             :on-click #(rf/dispatch [:add-red])}
         "Go"]]))

@@ -13,13 +13,13 @@
   (let [example-board (board/empty-board 3 3)]
     (is
       (=
-        (board/populate example-board #{[1 1]})
+        (board/populate example-board #{[1 1]} :red)
         [[nil nil nil]
          [nil :red nil]
          [nil nil nil]]))
     (is
       (=
-        (board/populate example-board #{[1 1] [1 2]})
+        (board/populate example-board #{[1 1] [1 2]} :red)
         [[nil nil nil]
          [nil :red :red]
          [nil nil nil]]))))

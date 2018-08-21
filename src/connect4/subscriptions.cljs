@@ -4,7 +4,12 @@
 (reg-sub
   :reds
   (fn [db [_ _]]
-    (:reds db)))
+    (:red db)))
+
+(reg-sub
+  :yellows
+  (fn [db [_ _]]
+    (:yellow db)))
 
 (reg-sub
   :cursor-pos

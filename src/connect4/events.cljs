@@ -6,7 +6,10 @@
 (reg-event-db
   :initialize
   (fn [_ _]
-    {:reds #{}
+    {:red #{}
+     :yellow #{}
+     :current-player :red
+     :next-player :yellow
      :cursor-pos 0}))
 
 (def board-max-x (count (first board/game-board)))
@@ -15,11 +18,17 @@
 (reg-event-db
   :drop-piece
   (fn [db _]
-    (update-in db [:reds]
-      conj (board/next-coord-in-col
-             (:cursor-pos db)
-             (:reds db)
-             (dec board-max-y))))) 
+    (let [current-player (:current-player db)
+          next-player (:next-player db)
+          all-pieces (clojure.set/union (:red db) (:yellow db))]
+      (-> db
+        (update-in [current-player]
+          conj (board/next-coord-in-col
+                (:cursor-pos db)
+                all-pieces
+                (dec board-max-y)))
+        (assoc :current-player next-player)
+        (assoc :next-player current-player)))))
 
 (reg-event-db
   :cursor-pos
