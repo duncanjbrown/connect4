@@ -17,10 +17,10 @@
           [:div.cell
             (let [value (get-in board [y x])]
               (case value
-                nil [:span.blank "_"]
-                :winner "X"
-                :red [:span.red "O"]
-                :yellow [:span.yellow "O"]))])])])
+                nil [:span.blank "·"]
+                :winner "●"
+                :red [:span.red "●"]
+                :yellow [:span.yellow "●"]))])])])
 
 (defn populate
   "Take cells as sets of [y x] coords and write them into a board"

@@ -13,7 +13,7 @@
   [width pos]
   [:div.row
     (for [x (range width)]
-      [:div.cell
+      [:div.cell.cursor
         (if (= x pos) "V" "")])])
 
 (defn app
@@ -24,18 +24,19 @@
         winners (rf/subscribe [:winners])
         game-state (rf/subscribe [:state])]
     [:div#app
-      [cursor-ui (count (first board/game-board)) @(rf/subscribe [:cursor-pos])]
-      [board/board-view
-       (-> game-board
-          (board/populate @reds :red)
-          (board/populate @yellows :yellow)
-          (board/populate @winners :winner))]
+      [:div.board
+        [cursor-ui (count (first board/game-board)) @(rf/subscribe [:cursor-pos])]
+        [board/board-view
+          (-> game-board
+              (board/populate @reds :red)
+              (board/populate @yellows :yellow)
+              (board/populate @winners :winner))]]
 
       (case @game-state
         :won
-        [:p (str @(rf/subscribe [:winning-player]) " has won")]
+        [:p.outcome (str @(rf/subscribe [:winning-player]) " has won")]
         :draw
-        [:p "It's a draw"]
+        [:p.outcome "It's a draw"]
         :playing nil)]))
 
 (defn render []
