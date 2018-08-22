@@ -20,16 +20,18 @@
   []
   (let [game-board board/game-board
         reds (rf/subscribe [:reds])
-        yellows (rf/subscribe [:yellows])]
+        yellows (rf/subscribe [:yellows])
+        winners (rf/subscribe [:winners])
+        winning-player (rf/subscribe [:winning-player])]
     [:div#app
       [cursor-ui (count (first board/game-board)) @(rf/subscribe [:cursor-pos])]
-      [board/board-view 
-       (board/populate
-         (board/populate game-board @reds :red)
-         @yellows :yellow)]
-      [:a {:href "#"
-            :on-click #(rf/dispatch [:add-red])}
-        "Go"]]))
+      [board/board-view
+       (-> game-board
+          (board/populate @reds :red)
+          (board/populate @yellows :yellow)
+          (board/populate @winners :winner))]
+      (if @winning-player
+        [:p (str @winning-player " has won")])]))
 
 (defn render []
   (let [node (.getElementById js/document "app")]

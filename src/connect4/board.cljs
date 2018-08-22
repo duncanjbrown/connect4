@@ -18,6 +18,7 @@
             (let [value (get-in board [y x])]
               (case value
                 nil [:span.blank "_"]
+                :winner "X"
                 :red [:span.red "O"]
                 :yellow [:span.yellow "O"]))])])])
 

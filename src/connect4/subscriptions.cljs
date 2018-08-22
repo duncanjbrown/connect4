@@ -12,6 +12,16 @@
     (:yellow db)))
 
 (reg-sub
+  :winning-player
+  (fn [db [_ _]]
+    (:winning-player db)))
+
+(reg-sub
+  :winners
+  (fn [db [_ _]]
+    (apply clojure.set/union (:winners db))))
+
+(reg-sub
   :cursor-pos
   (fn [db [_ _]]
    (:cursor-pos db)))
