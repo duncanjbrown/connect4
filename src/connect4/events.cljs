@@ -14,32 +14,59 @@
      :winning-player nil
      :cursor-pos 0}))
 
-(reg-event-db
-  :turn-taken
-  (fn [db [_ player]]
-    (if (not-empty (:winners db))
-      (do
-        (assoc db :winning-player player))
-      db)))
+;;
+;; Judging
+;;
+(reg-event-fx
+  :adjudicate
+  (fn [{:keys [db]} [_ [player winning-runs next-player]]]
+    (if (not-empty winning-runs)
+      {:dispatch [:won [player winning-runs]]}
+      {:dispatch [:next-turn next-player]})))
 
 (def board-max-x (count (first board/game-board)))
 (def board-max-y (count board/game-board))
 
+(reg-event-db
+  :won
+  (fn [db [_ [player winning-runs]]]
+    (-> db
+      (assoc :winners winning-runs)
+      (assoc :winning-player player))))
+
+(reg-event-db
+  :next-turn
+  (fn [db [_ next-player]]
+    (let [current-player (:current-player db)]
+      (-> db
+        (assoc :current-player next-player)
+        (assoc :next-player current-player)))))
+
+;;
+;; Playing
+;;
+
+(def reject-unless-playing
+  (re-frame.core/->interceptor
+    :id     :reject-unless-playing
+    :before (fn [context]
+              (let [{:keys [db _]} (:coeffects context)]
+                (if (:winning-player db)
+                  (assoc context :queue [])
+                  context)))))
+
 (reg-event-fx
   :drop-piece
+  [reject-unless-playing]
   (fn [{:keys [db]} _]
     (let [current-player (:current-player db)
           all-pieces (clojure.set/union (:red db) (:yellow db))
           new-piece (board/next-coord-in-col (:cursor-pos db) all-pieces (dec board-max-y))
           current-player-new-pieces (conj (current-player db) new-piece)
+          winning-runs (board/find-winners-from-origin new-piece current-player-new-pieces)
           next-player (:next-player db)]
-      {:db
-        (-> db
-          (assoc current-player current-player-new-pieces)
-          (assoc :winners (board/find-winners-from-origin new-piece current-player-new-pieces))
-          (assoc :current-player next-player)
-          (assoc :next-player current-player))
-        :dispatch [:turn-taken current-player]})))
+      {:db (assoc db current-player current-player-new-pieces)
+       :dispatch [:adjudicate [current-player winning-runs next-player]]})))
 
 (reg-event-db
   :cursor-pos
