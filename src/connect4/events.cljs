@@ -8,6 +8,7 @@
   (fn [_ _]
     {:red #{}
      :yellow #{}
+     :state :playing
      :current-player :red
      :next-player :yellow
      :winners nil
@@ -20,9 +21,14 @@
 (reg-event-fx
   :adjudicate
   (fn [{:keys [db]} [_ [player winning-runs next-player]]]
-    (if (not-empty winning-runs)
-      {:dispatch [:won [player winning-runs]]}
-      {:dispatch [:next-turn next-player]})))
+    (cond
+      (not-empty winning-runs) {:dispatch [:won [player winning-runs]]}
+
+      (=
+       (count (clojure.set/union (:red db) (:yellow db)))
+       (* 7 6)) {:dispatch [:draw]}
+
+      :else {:dispatch [:next-turn next-player]})))
 
 (def board-max-x (count (first board/game-board)))
 (def board-max-y (count board/game-board))
@@ -32,7 +38,13 @@
   (fn [db [_ [player winning-runs]]]
     (-> db
       (assoc :winners winning-runs)
-      (assoc :winning-player player))))
+      (assoc :winning-player player)
+      (assoc :state :won))))
+
+(reg-event-db
+  :draw
+  (fn [db [_ [player winning-runs]]]
+    (assoc db :state :draw)))
 
 (reg-event-db
   :next-turn
@@ -51,7 +63,7 @@
     :id     :reject-unless-playing
     :before (fn [context]
               (let [{:keys [db _]} (:coeffects context)]
-                (if (:winning-player db)
+                (if (not= (:state db) :playing)
                   (assoc context :queue [])
                   context)))))
 

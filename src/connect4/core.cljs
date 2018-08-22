@@ -22,7 +22,7 @@
         reds (rf/subscribe [:reds])
         yellows (rf/subscribe [:yellows])
         winners (rf/subscribe [:winners])
-        winning-player (rf/subscribe [:winning-player])]
+        game-state (rf/subscribe [:state])]
     [:div#app
       [cursor-ui (count (first board/game-board)) @(rf/subscribe [:cursor-pos])]
       [board/board-view
@@ -30,8 +30,13 @@
           (board/populate @reds :red)
           (board/populate @yellows :yellow)
           (board/populate @winners :winner))]
-      (if @winning-player
-        [:p (str @winning-player " has won")])]))
+
+      (case @game-state
+        :won
+        [:p (str @(rf/subscribe [:winning-player]) " has won")]
+        :draw
+        [:p "It's a draw"]
+        :playing nil)]))
 
 (defn render []
   (let [node (.getElementById js/document "app")]

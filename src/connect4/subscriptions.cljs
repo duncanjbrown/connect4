@@ -17,6 +17,11 @@
     (:winning-player db)))
 
 (reg-sub
+  :state
+  (fn [db [_ _]]
+    (:state db)))
+
+(reg-sub
   :winners
   (fn [db [_ _]]
     (apply clojure.set/union (:winners db))))
