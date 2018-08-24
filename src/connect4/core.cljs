@@ -37,7 +37,9 @@
         [:p.outcome (str @(rf/subscribe [:winning-player]) " has won")]
         :draw
         [:p.outcome "It's a draw"]
-        :playing nil)]))
+        :playing nil)
+      
+      [:button {:on-click #(rf/dispatch [:reset])} "reset"]]))
 
 (defn render []
   (let [node (.getElementById js/document "app")]

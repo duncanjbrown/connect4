@@ -3,17 +3,23 @@
     [connect4.board :as board]
     [re-frame.core :refer [reg-event-db reg-event-fx clear-event]]))
 
+(def default-db {:red #{}
+                 :yellow #{}
+                 :state :playing
+                 :current-player :red
+                 :next-player :yellow
+                 :winners nil
+                 :winning-player nil
+                 :cursor-pos 0})
+(reg-event-db
+  :reset
+  (fn [db _]
+    (merge db default-db)))
+
 (reg-event-db
   :initialize
-  (fn [_ _]
-    {:red #{}
-     :yellow #{}
-     :state :playing
-     :current-player :red
-     :next-player :yellow
-     :winners nil
-     :winning-player nil
-     :cursor-pos 0}))
+  (fn [db _]
+    default-db))
 
 ;;
 ;; Judging
