@@ -43,12 +43,12 @@
     (let [population #{[2 2] [2 1] [2 0]}]
       (is (=
            #{[2 2] [2 1] [2 0]}
-           (board/consecutive-pieces [0 -1] [2 2] population)))))
+           (board/consecutive-pieces population [0 -1] [2 2])))))
   (testing "it does not return non-consecutive pieces"
     (let [population #{[2 2] [2 0]}]
       (is (=
             #{[2 2]}
-            (board/consecutive-pieces [0 -1] [2 2] population))))))
+            (board/consecutive-pieces population [0 -1] [2 2]))))))
 
 (deftest find-winners-from-origin
   (testing "horizontal winners"
