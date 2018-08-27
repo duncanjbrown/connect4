@@ -73,18 +73,21 @@
                   (assoc context :queue [])
                   context)))))
 
+(defn all-pieces
+  [db]
+  (clojure.set/union (:red db) (:yellow db)))
+
 (reg-event-fx
   :drop-piece
   [reject-unless-playing]
   (fn [{:keys [db]} _]
-    (let [current-player (:current-player db)
-          all-pieces (clojure.set/union (:red db) (:yellow db))
-          new-piece (board/next-coord-in-col (:cursor-pos db) all-pieces (dec board-max-y))
-          current-player-new-pieces (conj (current-player db) new-piece)
-          winning-runs (board/find-winners-from-origin new-piece current-player-new-pieces)
-          next-player (:next-player db)]
-      {:db (assoc db current-player current-player-new-pieces)
-       :dispatch [:adjudicate [current-player winning-runs next-player]]})))
+    (if-let [new-piece (board/next-coord-in-col (:cursor-pos db) (all-pieces db) (dec board-max-y))]
+      (let [current-player (:current-player db)
+            current-player-new-pieces (conj (current-player db) new-piece)
+            winning-runs (board/find-winners-from-origin new-piece current-player-new-pieces)
+            next-player (:next-player db)]
+        {:db (assoc db current-player current-player-new-pieces)
+         :dispatch [:adjudicate [current-player winning-runs next-player]]}))))
 
 (reg-event-db
   :cursor-pos
