@@ -28,6 +28,11 @@
     "Current player: "
     [board/board-cell player]])
 
+(defn winner-class
+  [player]
+  (if player
+    (str "winner-" (name player))))
+
 (defn app
   []
   (let [game-board board/game-board
@@ -36,7 +41,7 @@
         winners (rf/subscribe [:winners])
         game-state (rf/subscribe [:state])]
     [:div#app
-      [:div.board
+      [:div.board {:class (winner-class @(rf/subscribe [:winning-player]))}
         [cursor-ui (count (first board/game-board)) @(rf/subscribe [:cursor-pos])]
         [board/board-view
           (-> game-board

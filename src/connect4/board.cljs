@@ -13,7 +13,7 @@
   (do
     (case value
       nil [:span.blank "·"]
-      :winner [:span "●"]
+      :winner [:span.winner "●"]
       :red [:span.red "●"]
       :yellow [:span.yellow "●"])))
 
