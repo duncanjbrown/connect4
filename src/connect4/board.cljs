@@ -33,8 +33,11 @@
 (defn next-coord-in-col
   "Coords appear as [y x] and [0 0] is at top left"
   [col coords col-max]
-  (let [pieces-in-col (filter #(= col (second %)) coords)]
-    [(- col-max (count pieces-in-col)) col]))
+  (let [pieces-in-col (filter #(= col (second %)) coords)
+        next-y-coord (- col-max (count pieces-in-col))]
+    (if (neg? next-y-coord)
+      nil
+      [next-y-coord col])))
 
 (defn consecutive-pieces
   [available-pieces transform origin]

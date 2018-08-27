@@ -36,7 +36,12 @@
       (is
         (=
           (board/next-coord-in-col 2 population 2)
-          [1 2])))))
+          [1 2]))))
+  (testing "it returns nil when no free co-ordinate is available"
+    (let [population #{[0 0] [1 0]}]
+      (is (=
+            (board/next-coord-in-col 0 population 1)
+            nil)))))
 
 (deftest consecutive-pieces
   (testing "it returns consecutive pieces"
