@@ -16,6 +16,18 @@
       [:div.cell.cursor
         (if (= x pos) "V" "")])])
 
+(defn human-readable-player
+  [player]
+  (-> player
+      (name)
+      (clojure.string/capitalize)))
+
+(defn current-player
+  [player]
+  [:p#current-player
+    "Current player: "
+    [board/board-cell player]])
+
 (defn app
   []
   (let [game-board board/game-board
@@ -34,10 +46,11 @@
 
       (case @game-state
         :won
-        [:p.outcome (str @(rf/subscribe [:winning-player]) " has won")]
+        [:p.outcome (str (human-readable-player @(rf/subscribe [:winning-player])) " has won")]
         :draw
         [:p.outcome "It's a draw"]
-        :playing nil)
+        :playing
+        [current-player @(rf/subscribe [:current-player])])
       
       [:div#instructions
         [:p 

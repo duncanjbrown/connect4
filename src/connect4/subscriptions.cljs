@@ -12,6 +12,11 @@
     (:yellow db)))
 
 (reg-sub
+  :current-player
+  (fn [db [_ _]]
+    (:current-player db)))
+
+(reg-sub
   :winning-player
   (fn [db [_ _]]
     (:winning-player db)))

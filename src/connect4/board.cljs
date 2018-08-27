@@ -8,6 +8,15 @@
 
 (def game-board (empty-board 7 6))
 
+(defn board-cell
+  [value]
+  (do
+    (case value
+      nil [:span.blank "·"]
+      :winner [:span "●"]
+      :red [:span.red "●"]
+      :yellow [:span.yellow "●"])))
+
 (defn board-view
   [board]
   [:div#board
@@ -16,11 +25,7 @@
         (for [x (range (count (first board)))]
           [:div.cell
             (let [value (get-in board [y x])]
-              (case value
-                nil [:span.blank "·"]
-                :winner "●"
-                :red [:span.red "●"]
-                :yellow [:span.yellow "●"]))])])])
+              [board-cell value])])])])
 
 (defn populate
   "Take cells as sets of [y x] coords and write them into a board"
