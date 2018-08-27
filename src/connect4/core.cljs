@@ -60,7 +60,7 @@
       [:div#instructions
         [:p 
          (interleave '("Left arrow: move left" "Right arrow: move right" "Space: drop piece") (repeat [:br]))]
-        [:button {:id "reset" :on-mouse-down #(rf/dispatch [:reset])} "reset"]]]))
+        [:button {:id "reset" :on-mouse-down #(rf/dispatch [:reset])} "reset (R)"]]]))
 
 (defn render []
   (let [node (.getElementById js/document "app")]
@@ -86,5 +86,7 @@
                     [[:drop-piece]
                      [{:which 32}]]
                     [[:cursor-pos 1]
-                     [{:which 39}]]]}])
+                     [{:which 39}]]
+                    [[:reset]
+                     [{:which 82}]]]}])
   (render))

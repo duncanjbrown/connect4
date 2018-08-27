@@ -9,8 +9,8 @@
                  :current-player :red
                  :next-player :yellow
                  :winners nil
-                 :winning-player nil
-                 :cursor-pos 0})
+                 :winning-player nil})
+
 (reg-event-db
   :reset
   (fn [db _]
@@ -19,7 +19,7 @@
 (reg-event-db
   :initialize
   (fn [db _]
-    default-db))
+    (merge {:cursor-pos 0} default-db)))
 
 ;;
 ;; Judging
