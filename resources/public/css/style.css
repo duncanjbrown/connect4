@@ -2,9 +2,9 @@ body {
   font-family: monospace;
   font-size: 40px;
 }
-.board {
-  margin: 0 auto;
+#app {
   width: 338px;
+  margin: 0 auto;
 }
 .row {
   display:block;
@@ -34,4 +34,19 @@ body {
 }
 .blank {
   color: #eee;
+}
+#instructions {
+  font-size: 20px;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 28px;
+  color: #444;
+}
+#reset {
+  display: block;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-transform: uppercase;
+  background: 0;
 }

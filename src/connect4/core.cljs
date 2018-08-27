@@ -39,7 +39,10 @@
         [:p.outcome "It's a draw"]
         :playing nil)
       
-      [:button {:on-click #(rf/dispatch [:reset])} "reset"]]))
+      [:div#instructions
+        [:p 
+         (interleave '("Left arrow: move left" "Right arrow: move right" "Space: drop piece") (repeat [:br]))]
+        [:button {:id "reset" :on-mouse-down #(rf/dispatch [:reset])} "reset"]]]))
 
 (defn render []
   (let [node (.getElementById js/document "app")]
