@@ -1,0 +1,3 @@
+{:output-to "target/build/connect4.js"
+ :optimizations :advanced
+ :main connect4.core}
