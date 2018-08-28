@@ -1,0 +1,75 @@
+body {
+  font-family: monospace;
+  font-size: 40px;
+}
+#app {
+  width: 338px;
+  margin: 0 auto;
+}
+.row {
+  display:block;
+  height: 60px;
+}
+.cell {
+  float: left;
+  text-align: center;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+}
+.cursor {
+  font-family: sans-serif;
+  font-weight: 200;
+}
+.outcome {
+  color: #444;
+  text-align: center;
+  font-size: 20px;
+}
+.red {
+  color: #f00;
+}
+.yellow {
+  color: #FFFF00;
+}
+.blank {
+  color: #eee;
+}
+#instructions {
+  font-size: 20px;
+  text-align: center;
+  line-height: 28px;
+  color: #444;
+}
+#reset {
+  display: block;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-transform: uppercase;
+  background: 0;
+}
+#current-player {
+  text-align: center;
+  color: #444;
+  font-size: 20px;
+  line-height: 28px;
+}
+.winner-red .cell > span, .winner-yellow .cell > span {
+  opacity: 0.5
+}
+
+.winner-red .cell > .winner {
+  color: #f00;
+  opacity: 1;
+}
+
+.winner-yellow .cell > .winner {
+  color: #FFFF00;
+  opacity: 1;
+}
+
+.external-links {
+  margin-top: 20px;
+  font-size: 14px;
+}
