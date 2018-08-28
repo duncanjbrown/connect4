@@ -11,7 +11,7 @@ ${TARGET_DIR}/css/style.css: ${RESOURCES_DIR}/css/style.css
 	cp $^ $@
 
 ${TARGET_DIR}/index.html: ${RESOURCES_DIR}/index.html
-	sed "s/cljs-out\/dev-main.js/connect4.js/" < $^ > $@
+	sed "s/\/cljs-out\/dev-main.js/connect4.js/" < $^ > $@
 
 clean:
 	-@rm ${TARGET_DIR}/connect4.js
