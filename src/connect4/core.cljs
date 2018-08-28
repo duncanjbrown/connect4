@@ -60,7 +60,9 @@
       [:div#instructions
         [:p 
          (interleave '("Left arrow: move left" "Right arrow: move right" "Space: drop piece") (repeat [:br]))]
-        [:button {:id "reset" :on-mouse-down #(rf/dispatch [:reset])} "reset (R)"]]]))
+        [:button {:id "reset" :on-mouse-down #(rf/dispatch [:reset])} "reset (R)"]
+        [:p.external-links
+         [:a {:href "https://github.com/duncanjbrown/connect4"} "Source code on GitHub"]]]]))
 
 (defn render []
   (let [node (.getElementById js/document "app")]
